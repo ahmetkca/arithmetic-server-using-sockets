@@ -13,7 +13,7 @@
 #define NOTHING "non"
 #define ERROR "err"
 
-void set_operation(char op, char **sop);
+char *set_operation(char op, char **sop);
 
 int main() {
     char op;
@@ -25,12 +25,23 @@ int main() {
     scanf("%d %c %d", &first_num, &op, &second_num);
 
     printf("\nYou entered: %d %c %d\n\n", first_num, op, second_num);
-    set_operation(op, &op_for_server);
+    char *a = set_operation(op, &op_for_server);
     printf("%c translated to %s\n\n", op, op_for_server);
+    printf("<%s>\n\n", a);
+    free(op_for_server);
+    
+    char input[1024] = "mul 1258 96665";
+    char *op_name = malloc(3 + 1);
+    int f, s;
+    sscanf(input, "%s %d %d", op_name, &f, &s);
+    printf("OP_NAME: %s\n", op_name);
+    printf("%d\n", f);
+    printf("%d\n", s);
+    free(op_name);
     return 0;
 }
 
-void set_operation(char op, char **sop) {
+char *set_operation(char op, char **sop) {
     printf("set_operation-|> %c %s\n\n", op, *sop);
     char *ssop = *sop;
     printf("set_operation-|> %c %c %c %c\n\n", ADD, SUBTRACT, DIVIDE, MULTIPLY);
@@ -49,4 +60,5 @@ void set_operation(char op, char **sop) {
     } else {
         strcpy(ssop, ERROR);
     }
+    return ssop;
 }
