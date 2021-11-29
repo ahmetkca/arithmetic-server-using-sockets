@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <unistd.h>
 
@@ -15,15 +16,19 @@
 
 
 
-int main() {
+int main(int argc, char *argv[]) {
     // char server_message[256] = "You have reached the server!";
 
     //create the server socket
     int server_socket;
+    struct sockaddr_in server_address;
+
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
+    // Clean server address
+    memset(&server_address, '\0', sizeof(server_address));
+
     //define the server address
-    struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT);
     server_address.sin_addr.s_addr = INADDR_ANY;

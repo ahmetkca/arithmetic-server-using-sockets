@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <unistd.h>
 
@@ -20,15 +21,19 @@
 
 #define DIVIDE_BY_0_ERROR 1
 
-int main() {
+int main(int argc, char *argv[]) {
   // create a socket;
   // char message_from_client[256] = "Hello from client";
 
   int network_socket;
+  struct sockaddr_in server_address;
+
   network_socket = socket(AF_INET, SOCK_STREAM, 0);
 
+  // Clean server address
+  memset(&server_address, '\0', sizeof(server_address));
+
   // specify an address for the socket
-  struct sockaddr_in server_address;
   server_address.sin_family = AF_INET;
   server_address.sin_port = htons(PORT);
   server_address.sin_addr.s_addr = INADDR_ANY;
@@ -46,7 +51,7 @@ int main() {
   while(1) {
     char op;
     uint32_t first_num, second_num;
-    char *op_for_server = malloc(3 + 1);
+    char *op_for_server = malloc(sizeof(char) * 3 + 1);
     strcpy(op_for_server, NOTHING);
     printf("Enter an arithmetic operation: (ex. 3 + 4): ");
     scanf("%d %c %d", &first_num, &op, &second_num);
