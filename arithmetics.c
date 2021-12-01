@@ -1,3 +1,13 @@
+/**
+ * 
+ * 
+ * This file contains basic arithmetic operation functions
+ * to help the execution of the instructions given by incoming client packet.
+ * 
+ * 
+**/
+
+
 #include "arithmetics.h"
 
 int add(int a, int b) {

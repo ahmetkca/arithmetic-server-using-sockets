@@ -48,6 +48,7 @@ int main(int argc, char *argv[]) {
   }
 
 
+  // prompt user for basic arithmetic operation to be send to the server for execution
   while(1) {
     char op;
     uint32_t first_num, second_num;
@@ -55,52 +56,52 @@ int main(int argc, char *argv[]) {
     strcpy(op_for_server, NOTHING);
     printf("Enter an arithmetic operation: (ex. 3 + 4): ");
     scanf("%d %c %d", &first_num, &op, &second_num);
+
+    // translate arithmetic operation symbols to their appropriate 3 character formats (for example, add, sub etc)
     translate_to_3char_arop(op, &op_for_server);
 
+    // check if the symbol is successfully translated to 3 character version
     if (strcmp(op_for_server, NOTHING) == 0 || strcmp(op_for_server, ERROR) == 0) {
-      printf("Please enter valid arithmetic operation!\n");
+      printf("[ERROR] Please enter valid arithmetic operation!\n");
     } else {
-      printf("Arithmetic operation: %s\n", op_for_server);
-      printf("First number: %d\n", first_num);
-      printf("Second number: %d\n", second_num);
-      // int first_num_to_server = htonl(first_num);
-      // int second_num_to_server = htonl(second_num);
       char instruction_to_server[1024];
+      // merge required information into one packet.
+      /* format:
+      *           operation first_number second_number
+      *           add       1            2
+      */
       sprintf(instruction_to_server, "%s %d %d", op_for_server, first_num, second_num);
       free(op_for_server);
       send(network_socket, instruction_to_server, sizeof(instruction_to_server), 0);
 
       char response[2048];
       recv(network_socket, response, sizeof(response), 0);
-      printf("Response from server: %s\n", response);
       int status_code, result;
+
+      // parse the coming packets from server
+      /*
+      *   response format is:
+      *                       INSTRUCTION_STATUS RESULT_OF_THE_INSTRUCTION
+      *                       1 (Success)        3 (result of the operation between two numbers)
+      *                       0 (Fail)           1 (Divide by 0 error)               
+      */
       parse_server_response(response, &status_code, &result);
 
       if (status_code == SUCCESSFUL) {
-        printf("Arithmetic instruction successfully executed in server\n");
-        printf("Result is %d\n", result);
+        printf("[SUCCESS] Result is %d\n", result);
       } else if (status_code == UNSUCCESSFUL) {
-        printf("Instruction execution failed!\n");
+        printf("[ERROR] Instruction execution failed!\n");
         if (result == DIVIDE_BY_0_ERROR) {
           printf("Error: divide by zero\n");
         }
       } else {
-        printf("Unexpected status code, closing socket...\n");
+        printf("[ERROR] Unexpected status code, closing socket...\n");
         break;
       }
-      // free(instruction_to_server);
+      
     }
   }
-  // return 0;
-  // send(network_socket, message_from_client, sizeof(message_from_client), 0);
 
-
-  // // receive data from the server
-  // char server_response[256];
-  // recv(network_socket, &server_response, sizeof(server_response), 0);
-
-  // // print out the server's response
-  // printf("The server sent the data: %s\n", server_response);
 
   // and the close the socket
   printf("Shutting down client socket...\n\n");

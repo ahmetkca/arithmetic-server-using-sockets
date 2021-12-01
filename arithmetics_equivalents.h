@@ -1,3 +1,12 @@
+/**
+ * 
+ * 
+ *  Contains arithmetic related constants
+ * 
+ * 
+**/
+
+
 #ifndef ARITHMETICS_EQUIVALENTS_H_
 #define ARITHMETICS_EQUIVALENTS_H_
 

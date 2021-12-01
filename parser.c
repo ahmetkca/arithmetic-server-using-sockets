@@ -1,3 +1,15 @@
+/**
+ * 
+ * 
+ * This file contains 2 functions one for client and one for server
+ * client one helps client socket to parse the request packets that comes from server and store them into appropriate variables.
+ * server one helpes server socket to parse the coming request packets from client and store them into appropriate variables
+ * so they can be used in the executor.
+ * 
+ * 
+**/
+
+
 #include "parser.h"
 #include <stdio.h>
 #include <string.h>

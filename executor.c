@@ -1,3 +1,12 @@
+/**
+ * 
+ * 
+ * Executes the given arithmetic instruction and store it in result with the status.
+ * for example:   
+ *              add 1  1 -> 1 2 (SUCCESS    ,   RESULT)
+ *              div 10 0 -> 0 1 (ERROR/FAIL ,   ERROR CODE)  
+**/
+
 #include "executor.h"
 #include <string.h>
 #include <stdio.h>

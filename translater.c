@@ -1,3 +1,12 @@
+/**
+ * 
+ * 
+ * Helper function for translating +, -, *, / symbols to add, sub, mul, div 3 character versions respecvtively.
+ * 
+ * 
+**/
+
+
 #include <string.h>
 #include "translater.h"
 #include "arithmetics_equivalents.h"
